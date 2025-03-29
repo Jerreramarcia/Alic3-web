@@ -4,10 +4,12 @@
       <Scan/>
     </div>
     <br>
+    <div class="grid gap-4 max-w-xl mx-auto">
+      <Alert/>
+    </div>
+    <br>
     <div class="grid grid-cols-2 gap-4 max-w-xl mx-auto">
-      <div class="col-span-2">
-        <Alert/>
-      </div>
+
       <div class="col-span-2">
         <Graph />
       </div>
