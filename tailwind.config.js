@@ -5,9 +5,10 @@ export default {
         './layouts/**/*.vue',
         './pages/**/*.vue',
         './app.vue',
+        './node_modules/flowbite/**/*.js'
     ],
     theme: {
         extend: {},
     },
-    plugins: [],
+    plugins: [require('flowbite')],
 }

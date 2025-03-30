@@ -15,9 +15,10 @@
     </button>
 
     <!-- Cámara + overlay -->
+    <!-- Contenedor del video -->
     <div
         v-show="isScanning"
-        class="relative mx-auto mt-4 rounded-xl overflow-hidden aspect-[16/9] w-full max-w-md border-2 border-blue-300"
+        class="relative mt-4 mx-auto rounded-xl overflow-hidden aspect-[3/4] w-full sm:max-w-md"
     >
       <video
           ref="video"
@@ -27,11 +28,9 @@
           class="absolute inset-0 w-full h-full object-contain bg-black"
       />
 
-      <!-- Zona de escaneo -->
+      <!-- Overlay de escaneo -->
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div
-            class="border-4 border-green-500 w-3/5 h-24 rounded-xl animate-pulse shadow-lg"
-        ></div>
+        <div class="border-4 border-green-500 w-4/5 h-24 rounded-xl animate-pulse shadow-lg"></div>
       </div>
     </div>
 
@@ -53,15 +52,22 @@
       Parar escaneo
     </button>
   </div>
+  <input
+      type="text"
+      v-model="result"
+      class="mt-4 px-3 py-2 rounded border border-gray-300 w-full"
+  />
+
 </template>
 
 <script setup>
-import {ref, onBeforeUnmount} from 'vue'
+import {onBeforeUnmount, ref} from 'vue'
 import {BrowserMultiFormatReader} from '@zxing/browser'
 
 const video = ref(null)
 const result = ref(null)
 const isScanning = ref(false)
+const fetchData = ref(null)
 
 const codeReader = new BrowserMultiFormatReader()
 let controls = null
@@ -101,4 +107,37 @@ const stopScanner = () => {
 onBeforeUnmount(() => {
   stopScanner()
 })
+
+
+watch(result, async (newValue, oldValue) => {
+  if (!newValue) return
+
+  console.log('🔎 Código actualizado:', newValue)
+
+  try {
+    let {data, error} = await useFetch(`http://localhost:8080/api/products/${newValue}`)
+
+    if (error.value) {
+      console.error('❌ Error al buscar el producto:', error.value)
+    } else {
+      console.log('✅ Producto:', data.value)
+      fetchData.value = data.value;
+      // acá podés guardar el resultado en otro `ref` o emitir evento
+    }
+  } catch (err) {
+    console.error('Error inesperado:', err)
+  }
+})
+
+import { useScanStore } from '~/stores/scanStores.js'
+const scanStore = useScanStore()
+
+// en tu watcher o directamente:
+watch(fetchData, (newVal) => {
+  if (newVal) {
+    console.log("data new value")
+    scanStore.setResult(newVal)
+  }
+})
+
 </script>
