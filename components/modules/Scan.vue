@@ -34,13 +34,13 @@
       </div>
     </div>
 
-    <!-- Resultado -->
+    <!-- BarCodeResultado -->
     <p
-        v-if="result && isScanning"
+        v-if="BarCodeResult && isScanning"
         class="mt-4 px-4 py-2 inline-block rounded-lg bg-green-100 text-green-800 font-medium text-sm"
     >
 
-      Código detectado: <span class="font-bold">{{ result }}</span>
+      Código detectado: <span class="font-bold">{{ BarCodeResult }}</span>
     </p>
 
     <!-- Botón parar -->
@@ -54,7 +54,7 @@
   </div>
   <input
       type="text"
-      v-model="result"
+      v-model="BarCodeResult"
       class="mt-4 px-3 py-2 rounded border border-gray-300 w-full"
   />
 
@@ -63,9 +63,10 @@
 <script setup>
 import {onBeforeUnmount, ref} from 'vue'
 import {BrowserMultiFormatReader} from '@zxing/browser'
+import {useScanStore} from '~/stores/scanStores.js'
 
 const video = ref(null)
-const result = ref(null)
+const BarCodeResult = ref(null)
 const isScanning = ref(false)
 const fetchData = ref(null)
 
@@ -81,8 +82,8 @@ const startScanner = async () => {
         video.value,
         (res, err) => {
           if (res) {
-            result.value = res.getText()
-            console.log('✅ Código detectado:', result.value)
+            BarCodeResult.value = res.getText()
+            console.log('✅ Código detectado:', BarCodeResult.value)
           }
         }
     )
@@ -109,7 +110,10 @@ onBeforeUnmount(() => {
 })
 
 
-watch(result, async (newValue, oldValue) => {
+/**
+ * Get api data
+ */
+watch(BarCodeResult, async (newValue, oldValue) => {
   if (!newValue) return
 
   console.log('🔎 Código actualizado:', newValue)
@@ -122,14 +126,14 @@ watch(result, async (newValue, oldValue) => {
     } else {
       console.log('✅ Producto:', data.value)
       fetchData.value = data.value;
-      // acá podés guardar el resultado en otro `ref` o emitir evento
+      // acá podés guardar el BarCodeResultado en otro `ref` o emitir evento
     }
   } catch (err) {
     console.error('Error inesperado:', err)
   }
 })
 
-import { useScanStore } from '~/stores/scanStores.js'
+
 const scanStore = useScanStore()
 
 // en tu watcher o directamente:
@@ -137,6 +141,7 @@ watch(fetchData, (newVal) => {
   if (newVal) {
     console.log("data new value")
     scanStore.setResult(newVal)
+    scanStore.setProduct(newVal)
   }
 })
 
