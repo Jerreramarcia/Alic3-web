@@ -119,7 +119,7 @@ watch(BarCodeResult, async (newValue, oldValue) => {
   console.log('🔎 Código actualizado:', newValue)
 
   try {
-    let {data, error} = await useFetch(`http://localhost:8080/api/products/${newValue}`)
+    let {data, error} = await useFetch(`https://192.168.0.227:8080/api/products/${newValue}`)
 
     if (error.value) {
       console.error('❌ Error al buscar el producto:', error.value)

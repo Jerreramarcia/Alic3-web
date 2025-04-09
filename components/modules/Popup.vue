@@ -2,6 +2,7 @@
 import {ref, watch} from 'vue'
 import {useScanStore} from '~/stores/scanStores.js'
 
+const count = ref(0)
 const scanStore = useScanStore()
 const showModal = ref(false)
 
@@ -17,6 +18,15 @@ const confirm = () => {
   showModal.value = false
 }
 
+const decrement = () => {
+  if(count.value>0) {
+    count.value--
+  }
+}
+
+const increment = () => {
+  count.value++
+}
 </script>
 
 
@@ -45,12 +55,32 @@ const confirm = () => {
             ¿Código escaneado?
           </h3>
           <p class="mb-4 text-gray-600 dark:text-gray-300">{{ scanStore.scannedProduct.displayName }}</p>
+
+          <!-- Mostramos la imagen del producto-->
+
           <img
               v-if="scanStore.scannedProduct"
               :src="scanStore.scannedProduct.thumbnail"
               alt="Imagen del producto"
-              class="mx-auto mb-4 w-24 h-2/3 rounded shadow object-contain bg-transparent"
+              class="mx-auto mb-4 max-w-[200px] max-h-[200px] rounded shadow object-contain"
           />
+
+
+          <!--  Start counter -->
+
+          <div class="flex items-center justify-center gap-2">
+            <div class="counterManagerDiv">
+              <UButton class="counterManagerBtnPlus" icon="i-lucide-plus" size="xl" color="primary" variant="solid" @click="increment"/>
+            </div>
+
+            <div><span class="text-2xl">{{ count }}</span></div>
+
+            <div class="counterManagerDiv">
+              <UButton class="counterManagerBtnLess" icon="i-lucide-minus" size="xl" color="primary" variant="solid" @click="decrement"/>
+            </div>
+          </div>
+          <!-- End counter-->
+
           <div class="flex justify-center gap-3 mt-4">
             <button
                 @click="confirm"
