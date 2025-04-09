@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+
+
+
+
+/*Component - Popup*/
+.counterManagerDiv{
+    @apply flex items-center m-2;
+}
+.counterManagerBtnPlus{
+    @apply bg-green-800 text-white w-10 h-8 flex items-center justify-center rounded
+}
+.counterManagerBtnLess{
+
+    @apply bg-red-800 text-white w-10 h-8 flex items-center justify-center rounded
+}
