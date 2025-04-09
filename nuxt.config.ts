@@ -19,4 +19,10 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  devServer: {
+    https: {
+      key: './certs/server.key',
+      cert: './certs/server.crt'
+    }
+  }
 })
