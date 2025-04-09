@@ -24,5 +24,13 @@ export default defineNuxtConfig({
       key: './certs/server.key',
       cert: './certs/server.crt'
     }
+  },
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'http://192.168.0.227:8080',
+        changeOrigin: true
+      }
+    }
   }
 })
