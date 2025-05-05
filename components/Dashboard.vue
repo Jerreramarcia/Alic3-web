@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 min-h-screen bg-gray-900 text-white">
+
     <div class="grid gap-4 max-w-xl mx-auto">
       <Scan/>
     </div>
@@ -16,10 +16,16 @@
       <NumberBox :number="48"/>
       <NumberBox :number="12"/>
       <Popup/>
+
+      <div class="col-span-2">
+        <NuxtLink to="/inventory">
+          <button>Ir a inventory</button>
+        </NuxtLink>
+      </div>
     </div>
 
     <p>Último código: {{ result }}</p>
-  </div>
+
 </template>
 
 <script setup>
