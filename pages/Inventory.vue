@@ -1,20 +1,30 @@
 <template>
   <div class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    <UserCard
-        v-for="user in users"
-        :key="user.name"
-        :avatar="user.avatar"
-        :name="user.name"
-        :position="user.position"
-        :role="user.role"
-    />
+
+    <div class="mb-6">
+      <label class="block text-white mb-2">Tamaño de avatar: {{ imageSize }}px</label>
+      <input type="range" min="100" max="400" v-model="imageSize" class="w-full max-w-md"/>
+    </div>
+
+
+      <ProductCard
+          v-for="user in users"
+          :key="user.name"
+          :avatar="user.avatar"
+          :name="user.name"
+          :position="user.position"
+          :role="user.role"
+          :size="imageSize"
+      />
+
   </div>
 </template>
 
 <script setup>
 
-import UserCard from "~/components/layout/ProductCard.vue";
+import ProductCard from "~/components/layout/ProductCard.vue";
 
+const imageSize = ref(100)
 
 const users = [
   {
