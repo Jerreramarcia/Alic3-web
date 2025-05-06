@@ -30,11 +30,12 @@ const fetchUser = async () => {
     return
   }
 
-  const { data, error: fetchError } = await useFetch('https://localhost:8080/api/auth/me', {
+  const { data, error: fetchError } = await useFetch('http://localhost:8080/api/auth/me', {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     }
   })
+
 
   if (fetchError.value) {
     console.log(token as string)

@@ -15,3 +15,25 @@
 
     @apply bg-red-800 text-white w-10 h-8 flex items-center justify-center rounded
 }
+
+
+@font-face {
+    font-family: 'Bio Sans';
+    src: url('/fonts/bio-sans-maisfontes/bio-sans.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bio Sans';
+    src: url('/fonts/bio-sans-maisfontes/bio-sans-bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+.font-biosans
+{
+    font-family: 'Bio Sans';
+}

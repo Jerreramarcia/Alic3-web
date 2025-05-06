@@ -122,8 +122,13 @@ watch(BarCodeResult, async (newValue, oldValue) => {
   console.log('🔎 Código actualizado:', newValue)
 
   try {
-    let {data, error} = await useFetch(`https://localhost:8080/api/products/${newValue}`)
+    const token = useCookie('token') // asegúrate que el nombre coincida con tu cookie
 
+    const { data, error } = await useFetch(`http://localhost:8080/api/products/${newValue}`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`
+      }
+    })
     if (error.value) {
       console.error('❌ Error al buscar el producto:', error.value)
     } else {
