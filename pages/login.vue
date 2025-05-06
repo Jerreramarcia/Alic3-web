@@ -2,7 +2,7 @@
   <div class="max-w-md mx-auto mt-20 p-6 bg-white rounded shadow">
     <h1 class="text-2xl font-bold mb-4">Iniciar sesión</h1>
     <form @submit.prevent="login">
-      <input v-model="email" type="" placeholder="Email" class="mb-2 w-full p-2 border rounded" required />
+      <input v-model="email" type="text" placeholder="Email" class="mb-2 w-full p-2 border rounded" required />
       <input v-model="password" type="password" placeholder="Contraseña" class="mb-4 w-full p-2 border rounded" required />
       <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Entrar</button>
     </form>
@@ -23,7 +23,7 @@ const login = async () => {
   try {
     const { data, error: fetchError } = await useFetch('/api/auth/login', {
       method: 'POST',
-      body: { email: email.value, password: password.value },
+      body: { username: email.value, password: password.value },
       baseURL: 'https://localhost:8080',
     })
 
