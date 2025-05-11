@@ -6,6 +6,6 @@
   </UApp>
 </template>
 
-<script>
+<script setup lang="ts">
 import 'flowbite';
 </script>

@@ -1,78 +1,80 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui'
+import { useRouter } from 'vue-router'
+import { useAuthUser } from '~/composables/useAuthUser'
 
-const items = ref<NavigationMenuItem[]>([
-  {
-    label: 'Home',
-    icon: 'i-lucide-home',
-    to: '/'
-  },
-  {
-    label: 'inventory',
-    icon: 'i-lucide-shopping-cart',
-    to: '/inventory'
-  },
-  {
-    label: 'Components',
-    icon: 'i-lucide-box',
-    to: '/components',
-    // active: true,
-    children: [
-      {
-        label: 'Link',
-        icon: 'i-lucide-file-text',
-        description: 'Use NuxtLink with superpowers.',
-        to: '/components/link'
-      },
-      {
-        label: 'Modal',
-        icon: 'i-lucide-file-text',
-        description: 'Display a modal within your application.',
-        to: '/components/modal'
-      },
-      {
-        label: 'NavigationMenu',
-        icon: 'i-lucide-file-text',
-        description: 'Display a list of links.',
-        to: '/components/navigation-menu'
-      },
-      {
-        label: 'Pagination',
-        icon: 'i-lucide-file-text',
-        description: 'Display a list of pages.',
-        to: '/components/pagination'
-      },
-      {
-        label: 'Popover',
-        icon: 'i-lucide-file-text',
-        description: 'Display a non-modal dialog that floats around a trigger element.',
-        to: '/components/popover'
-      },
-      {
-        label: 'Progress',
-        icon: 'i-lucide-file-text',
-        description: 'Show a horizontal bar to indicate task progression.',
-        to: '/components/progress'
-      }
-    ]
-  },
-  {
-    label: 'GitHub',
-    icon: 'i-simple-icons-github',
-    badge: '3.8k',
-    to: 'https://github.com/nuxt/ui',
-    target: '_blank'
-  },
-  {
-    label: 'Help',
-    icon: 'i-lucide-circle-help',
-    disabled: true
-  }
-])
+const router = useRouter()
+const { user } = useAuthUser()
+
+const logout = () => {
+  useCookie('token').value = null
+  user.value = null
+  router.push('/auth')
+}
 </script>
-
 <template>
-  <div class="left-0 w-screen z-50 bg-gray-900">
-    <UNavigationMenu :items="items" class="w-full justify-center" />
-  </div>
+  <nav class="bg-gray-800">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <!-- Izquierda: Logo + enlaces -->
+        <div class="flex items-center space-x-4">
+          <NuxtLink to="/" class="flex items-center">
+            <img
+                class="h-8 w-auto"
+                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+                alt="Logo"
+            />
+          </NuxtLink>
+          <NuxtLink
+              to="/"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              active-class="bg-gray-900 text-white"
+          >
+            Home
+          </NuxtLink>
+          <NuxtLink
+              to="/inventory"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              active-class="bg-gray-900 text-white"
+          >
+            Inventory
+          </NuxtLink>
+        </div>
+        <!-- Derecha: Avatar + Dropdown -->
+        <div v-if="user" class="relative">
+          <details class="group">
+            <summary class="cursor-pointer flex items-center space-x-2">
+              <img
+                  class="h-8 w-8 rounded-full object-cover"
+                  :src="user.image || `https://api.dicebear.com/7.x/identicon/svg?seed=${user.username}`"
+                  alt="Avatar"
+              />
+              <span class="text-sm text-white font-medium hidden sm:inline">{{ user.username }}</span>
+            </summary>
+            <div
+                class="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5"
+            >
+              <NuxtLink
+                  to="/profile"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Perfil
+              </NuxtLink>
+              <NuxtLink
+                  to="/settings"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Ajustes
+              </NuxtLink>
+              <button
+                  @click="logout"
+                  class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>

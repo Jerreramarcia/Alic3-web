@@ -7,6 +7,14 @@
       Obtener datos del usuario
     </button>
 
+    <button
+        @click="fetchProduct"
+        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+    >
+      Obtener datos de producto
+    </button>
+
+
     <div v-if="user" class="mt-4">
       <h2 class="text-lg font-bold">Usuario autenticado</h2>
       <pre class="text-left bg-gray-100 p-2 rounded mt-2">{{ user }}</pre>
@@ -44,4 +52,32 @@ const fetchUser = async () => {
     user.value = data.value
   }
 }
+
+
+const fetchProduct = async () => {
+  error.value = ''
+  user.value = null
+
+  const token = useCookie('token').value
+
+  if (!token) {
+    error.value = 'No hay token de autenticación.'
+    return
+  }
+
+  const { data, error: fetchError } = await useFetch('http://localhost:8080/api/user/product/0', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+
+
+  if (fetchError.value) {
+    error.value = 'Error al obtener usuario. ¿Estás autenticado?'
+    console.log(data)
+  }
+}
+
+
+
 </script>

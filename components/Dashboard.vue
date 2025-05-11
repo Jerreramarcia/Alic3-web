@@ -17,14 +17,7 @@
       <NumberBox :number="12"/>
       <Popup/>
 
-      <div class="col-span-2">
-        <NuxtLink to="/inventory">
-          <button>Ir a inventory</button>
-        </NuxtLink>
-      </div>
     </div>
-
-    <p>Último código: {{ result }}</p>
 
 </template>
 
